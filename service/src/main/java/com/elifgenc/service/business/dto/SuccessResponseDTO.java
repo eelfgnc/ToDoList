@@ -1,4 +1,4 @@
-package com.elifgenc.service.dto;
+package com.elifgenc.service.business.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

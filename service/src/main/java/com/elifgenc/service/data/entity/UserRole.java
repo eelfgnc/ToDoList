@@ -1,19 +1,24 @@
-package com.elifgenc.service.entity;
+package com.elifgenc.service.data.entity;
 
 import com.elifgenc.service.audit.AuditingAwareBaseEntity;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+
 import java.io.Serializable;
 
-@Data
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "user_role")
 public class UserRole extends AuditingAwareBaseEntity implements Serializable {
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @ManyToOne

@@ -1,20 +1,20 @@
-package com.elifgenc.service.entity;
-
+package com.elifgenc.service.data.entity;
 
 import com.elifgenc.service.audit.AuditingAwareBaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User extends AuditingAwareBaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -38,12 +38,9 @@ public class User extends AuditingAwareBaseEntity implements Serializable {
     private String lastName;
 
     @Column(
-            name = "email",
-            columnDefinition = "varchar(255)",
-            nullable = false,
-            unique = true
+            name = "date_of_birth"
     )
-    private String email;
+    private LocalDateTime dateOfBirth;
 
     @Column(
             name = "phone",
@@ -57,22 +54,43 @@ public class User extends AuditingAwareBaseEntity implements Serializable {
     )
     private String city;
 
-
     @Column(
-            name = "user_name",
-            columnDefinition = "varchar(150)",
+            name = "email",
+            columnDefinition = "varchar(255)",
             nullable = false,
             unique = true
     )
-    private String userName;
+    private String email;
 
     @Column(
-            name = "pass",
+            name = "password",
             columnDefinition = "varchar(150)",
             nullable = false
     )
-    private String pass;
+    private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserRole> userRoles = new ArrayList<>();
+    @Column(
+            name = "account_locked"
+    )
+    private boolean accountLocked;
+
+    @Column(
+            name = "enabled"
+    )
+    private boolean enabled;
+
+    @Column(
+            name = "last_login_date"
+    )
+    private LocalDateTime lastLoaginDate;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> userRoles;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ToDoItem> toDoItems = new ArrayList<>();
+
+    public String getFullName(){
+        return getFirstName() + " " + getLastName();
+    }
 }

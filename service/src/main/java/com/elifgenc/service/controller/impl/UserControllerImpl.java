@@ -2,10 +2,10 @@ package com.elifgenc.service.controller.impl;
 
 import com.elifgenc.service.constant.ResponseConstant;
 import com.elifgenc.service.controller.UserController;
-import com.elifgenc.service.dto.CreateUserDTO;
-import com.elifgenc.service.dto.SuccessResponseDTO;
-import com.elifgenc.service.dto.UserDTO;
-import com.elifgenc.service.services.UserService;
+import com.elifgenc.service.business.dto.CreateUserDTO;
+import com.elifgenc.service.business.dto.SuccessResponseDTO;
+import com.elifgenc.service.business.dto.UserDTO;
+import com.elifgenc.service.business.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,9 @@
 package com.elifgenc.service.exception;
 
 import com.elifgenc.service.constant.ErrorMessage;
+import lombok.Getter;
 
+@Getter
 public class ToDoServiceException extends RuntimeException{
     private static final long serialVersionUID = 1L;
 
@@ -18,14 +20,6 @@ public class ToDoServiceException extends RuntimeException{
         super(errorMessage.getMessage());
         this.code = errorMessage.getCode();
         this.internalMessage = errorMessage.getInternalMessage();
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getInternalMessage() {
-        return internalMessage;
     }
 
 }
