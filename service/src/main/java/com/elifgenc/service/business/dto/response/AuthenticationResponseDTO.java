@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class AuthenticationResponseDTO {
+    private String email;
+    private String password;
     private String accessToken;
     private String refreshToken;
 }
