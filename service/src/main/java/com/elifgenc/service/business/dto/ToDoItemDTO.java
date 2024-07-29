@@ -15,8 +15,7 @@ public class ToDoItemDTO extends AuditingAwareBaseDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String description;
+    private String item;
     private Boolean isDone;
     private LocalDateTime dueTime;
-
 }

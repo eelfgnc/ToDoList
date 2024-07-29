@@ -23,8 +23,8 @@ public class ToDoItemControllerImpl implements ToDoItemController {
 
     @Override
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<ToDoItemDTO>> getToDoItems(Long userId) {
-        return ResponseEntity.ok(toDoItemService.getAllToDo(userId));
+    public ResponseEntity<List<ToDoItemDTO>> getToDoItems(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(toDoItemService.getAllToDo(id));
     }
 
     @Override

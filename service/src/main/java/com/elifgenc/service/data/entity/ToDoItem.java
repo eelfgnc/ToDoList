@@ -22,12 +22,12 @@ public class ToDoItem extends AuditingAwareBaseEntity implements Serializable {
     private Long id;
 
     @Column(
-            name = "description",
+            name = "item",
             length = 600,
             nullable = false,
             columnDefinition = "varchar(600) default ''"
     )
-    private String description;
+    private String item;
 
     @Column(
             name = "is_done",
@@ -42,6 +42,6 @@ public class ToDoItem extends AuditingAwareBaseEntity implements Serializable {
     private LocalDateTime dueDate;
 
     @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
+    @JoinColumn(name="user_id")
     private User user;
 }

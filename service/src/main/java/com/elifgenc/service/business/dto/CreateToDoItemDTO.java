@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 public class CreateToDoItemDTO {
     private Long userId;
     private Long todoItemId;
-    private String description;
+    private String item;
     private LocalDateTime dueTime;
 }

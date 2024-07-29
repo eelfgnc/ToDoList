@@ -85,9 +85,9 @@ public class User extends AuditingAwareBaseEntity implements Serializable {
     private LocalDateTime lastLoaginDate;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserRole> userRoles;
+    private List<UserRole> userRoles= new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<ToDoItem> toDoItems = new ArrayList<>();
 
     public String getFullName(){

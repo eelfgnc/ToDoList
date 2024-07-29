@@ -22,10 +22,10 @@ public class UserRole extends AuditingAwareBaseEntity implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", unique = true, nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 }

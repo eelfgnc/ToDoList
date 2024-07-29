@@ -1,6 +1,7 @@
 package com.elifgenc.service.business.services.impl;
 
 import com.elifgenc.service.bean.ModelMapperBean;
+import com.elifgenc.service.business.dto.response.UserRoleDTO;
 import com.elifgenc.service.constant.ErrorMessage;
 import com.elifgenc.service.business.dto.CreateUserDTO;
 import com.elifgenc.service.business.dto.UserDTO;
@@ -15,6 +16,9 @@ import org.modelmapper.Provider;
 import org.modelmapper.TypeMap;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -66,5 +70,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public UserRoleDTO getAllRolesByUserId(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
+        List<String> roleNames = user.getUserRoles().stream().map(t -> t.getRole().getName()).collect(Collectors.toList());
+        return  UserRoleDTO
+                .builder()
+                .id(user.getId())
+                .username(user.getEmail())
+                .name(user.getFullName())
+                .roles(roleNames)
+                .build();
     }
 }

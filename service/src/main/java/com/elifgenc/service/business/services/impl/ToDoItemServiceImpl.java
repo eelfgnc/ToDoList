@@ -25,8 +25,8 @@ public class ToDoItemServiceImpl implements ToDoItemService {
 
     @Override
     public List<ToDoItemDTO> getAllToDo(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
-        return user.getToDoItems().stream().map(t -> modelMapperBean.GetModelMapper().map(t, ToDoItemDTO.class)).collect(Collectors.toList());
+        List<ToDoItem> toDoItems = toDoItemRepository.findByUserId(id);
+        return toDoItems.stream().map(t -> modelMapperBean.GetModelMapper().map(t, ToDoItemDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ToDoItemServiceImpl implements ToDoItemService {
         User user = userRepository.findById(createToDoItemDTO.getUserId()).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
 
         ToDoItem toDoItem = ToDoItem.builder()
-                .description(createToDoItemDTO.getDescription())
+                .item(createToDoItemDTO.getItem())
                 .dueDate(createToDoItemDTO.getDueTime())
                 .isDone(false)
                 .build();
@@ -47,7 +47,7 @@ public class ToDoItemServiceImpl implements ToDoItemService {
     @Override
     public ToDoItemDTO updateToDo(Long id, CreateToDoItemDTO createToDoItemDTO) {
         ToDoItem toDoItem = toDoItemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.TODO_NOT_FOUND));
-        toDoItem.setDescription(createToDoItemDTO.getDescription());
+        toDoItem.setItem(createToDoItemDTO.getItem());
         toDoItem.setDueDate(createToDoItemDTO.getDueTime());
         toDoItem.setIsDone(false);
         ToDoItem updateDoItem = toDoItemRepository.save(toDoItem);
