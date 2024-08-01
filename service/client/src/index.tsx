@@ -34,7 +34,6 @@ function render() {
 		) {
 			api.get<UserRoleDTO>("/users/roles").then(
 				(userRoleDTO: UserRoleDTO) => {
-          console.log("user info: ", userRoleDTO);
 					store.dispatch(setUserWithRole(userRoleDTO));
 				}
 			);

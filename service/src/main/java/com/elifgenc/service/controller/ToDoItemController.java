@@ -10,9 +10,9 @@ import java.util.List;
 public interface ToDoItemController {
     ResponseEntity<List<ToDoItemDTO>> getToDoItems(Long userId);
 
-    ResponseEntity<ToDoItemDTO> createToDoItem(CreateToDoItemDTO createToDoItemDTO);
+    ResponseEntity<SuccessResponseDTO> createToDoItem(CreateToDoItemDTO createToDoItemDTO);
 
-    ResponseEntity<ToDoItemDTO> updateToDoItem(Long id, CreateToDoItemDTO updateToDoItemDTO);
+    ResponseEntity<SuccessResponseDTO> updateToDoItem(Long id, CreateToDoItemDTO updateToDoItemDTO);
 
     ResponseEntity<SuccessResponseDTO> deleteToDoItem(Long id);
 }

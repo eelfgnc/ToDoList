@@ -15,6 +15,6 @@ import java.io.Serializable;
 public class RefreshTokenRequestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @NotBlank(message = "Refresh token boş olamaz.")
+    @NotBlank(message = "Refresh token is not empty.")
     private String refreshToken;
 }

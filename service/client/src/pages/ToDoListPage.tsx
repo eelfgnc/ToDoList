@@ -1,26 +1,30 @@
-import { MaterialReactTable, MRT_ColumnDef, MRT_ToggleDensePaddingButton, MRT_ToggleFullScreenButton, useMaterialReactTable } from "material-react-table";
+import { MaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
 import api from "../config/AxiosConfig";
 import { useSelector } from "react-redux";
 import { Box, Button, Checkbox, IconButton, Menu, MenuItem } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import PrintIcon from '@mui/icons-material/Print';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-type ToDoItem = {
-    id: number;
-    item: string;
-    isDone: boolean;
-  };
+import ToDoAddPage from "./ToDoAddPage";
+import { store } from "../redux/store";
+import { addNotification } from "../redux/slice/NotificationSlice";
+import { ToDoItemDTO, ToDoItemInitialize } from "../dto/ToDoItemDTO";
+import ToDoDeletePage from "./ToDoDeletePage";
+
 
 const ToDoListPage = () => {
     const userId = useSelector((state: any) => state.user.id);
-    const [dataList, setDataList] = useState<ToDoItem[]>([]);
-
+    const [dataList, setDataList] = useState<ToDoItemDTO[]>([]);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-  
+    const [option, setOption] = useState<string>("Done");
+    const [openAddPage, setOpenAddPage] = useState<boolean>(false);
+    const [openDeletePage, setOpenDeletePage] = useState<boolean>(false);
+    const [listUpdate, setListUpdate] = useState<boolean>(false);
+    const [selectedItem, setSelectedItem] = useState<ToDoItemDTO>(ToDoItemInitialize);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
     };
@@ -30,21 +34,33 @@ const ToDoListPage = () => {
     };
   
     const handleMenuItemClick = (action: string) => {
-      console.log('Menu action:', action);
+        setOption(action);
       handleClose();
     };
     
-	useEffect(() => {
-		GetToDoList();
-	}, []); // eslint-disable-line
 
 	const GetToDoList = async () => {		
-		await api.get("/todo/user/" +  userId).then((users: ToDoItem[]) => {
+		await api.get("/todo/user/" +  userId).then((users: ToDoItemDTO[]) => {
 			setDataList(users);
 		});
 	};
+	
+    useEffect(() => {
+		GetToDoList();
+	}, []); // eslint-disable-line
 
- 
+    useEffect(() => {
+		GetToDoList();        
+	}, [option]); // eslint-disable-line
+
+    useEffect(() => {
+        if(listUpdate){
+            setSelectedItem(ToDoItemInitialize);
+            GetToDoList();
+            setListUpdate(false);
+        }
+	}, [listUpdate]); // eslint-disable-line
+
     const columns = useMemo(
         () => [
             {
@@ -65,10 +81,10 @@ const ToDoListPage = () => {
                         checked={row.original.isDone}
                         onChange={() => handleCheckboxChange(row.original.id)}
                     />
-                    <IconButton onClick={() => handleEdit(row.original.id)}>
+                    <IconButton onClick={() => handleEdit(row.original)}>
                         <EditIcon color="warning" fontSize="medium"/>
                     </IconButton>
-                    <IconButton onClick={() => handleDelete(row.original.id)}>
+                    <IconButton onClick={() => handleDelete(row.original)}>
                         <DeleteIcon color="error" fontSize="medium"/>
                     </IconButton>
                 </div>
@@ -82,12 +98,14 @@ const ToDoListPage = () => {
         console.log('Select item with id:', id);
     };
 
-    const handleEdit = (id: number) => {
-        console.log('Edit item with id:', id);
+    const handleEdit = (toDoItemDTO: ToDoItemDTO) => {
+        setSelectedItem(toDoItemDTO);
+        setOpenAddPage(true);
     };
 
-    const handleDelete = (id: number) => {
-        console.log('Delete item with id:', id);
+    const handleDelete = (toDoItemDTO: ToDoItemDTO) => {
+        setSelectedItem(toDoItemDTO);
+        setOpenDeletePage(true);
     };
 
 
@@ -97,8 +115,18 @@ const ToDoListPage = () => {
             <MaterialReactTable
                 columns={columns}
                 data={dataList}
-                renderTopToolbarCustomActions={() => (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                renderToolbarInternalActions={({ table }) => (
+                    <Box display={"flex"} alignItems={"center"}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginRight: "8px" }}
+                        onClick={() => {
+                            setOpenAddPage(true);
+                        }}
+                    >
+                        Add ToDo
+                    </Button>
                     <Button
                         variant="outlined"
                         startIcon={<MoreVertIcon />}
@@ -111,44 +139,24 @@ const ToDoListPage = () => {
                         open={open}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={() => handleMenuItemClick('action1')}>Action 1</MenuItem>
-                        <MenuItem onClick={() => handleMenuItemClick('action2')}>Action 2</MenuItem>
-                        <MenuItem onClick={() => handleMenuItemClick('action3')}>Action 3</MenuItem>
-                    </Menu>
-                    </div>
-                )}
-                renderToolbarInternalActions={({ table }) => (
-                    <Box>
-                    <IconButton
-                        onClick={() => {
-                        window.print();
-                        }}
-                    >
-                        <PrintIcon />
-                    </IconButton>
-
-                    <MRT_ToggleDensePaddingButton table={table} />
-                    <MRT_ToggleFullScreenButton table={table} />
-
-                    <IconButton
-                        onClick={handleClick}
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                    >
-                        <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={() => handleMenuItemClick('action1')}>Action 1</MenuItem>
-                        <MenuItem onClick={() => handleMenuItemClick('action2')}>Action 2</MenuItem>
-                        <MenuItem onClick={() => handleMenuItemClick('action3')}>Action 3</MenuItem>
+                        <MenuItem onClick={() => handleMenuItemClick('All')}>All</MenuItem>
+                        <MenuItem onClick={() => handleMenuItemClick('Done')}>Done</MenuItem>
+                        <MenuItem onClick={() => handleMenuItemClick('Todo')}>Todo</MenuItem>
                     </Menu>
                     </Box>
                 )}
+            />
+            <ToDoAddPage
+                initializer={selectedItem}
+                open= {openAddPage}
+                handleClose={setOpenAddPage}
+                setListUpdate={setListUpdate}
+            />
+            <ToDoDeletePage
+                initializer={selectedItem}
+                open= {openDeletePage}
+                handleClose={setOpenDeletePage}
+                setListUpdate={setListUpdate}
             />
         </div>
     );

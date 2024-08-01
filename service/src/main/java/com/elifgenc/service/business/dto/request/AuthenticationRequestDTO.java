@@ -14,12 +14,12 @@ import lombok.Setter;
 public class AuthenticationRequestDTO {
 
     @Email(message = "Email is not well formatted")
-    @NotEmpty(message = "Email is mandatory")
-    @NotNull(message = "Email is mandatory")
+    @NotEmpty(message = "Email is not empty.")
+    @NotNull(message = "Email is not null.")
     private String email;
 
-    @NotEmpty(message = "Password is mandatory")
-    @NotNull(message = "Password is mandatory")
+    @NotEmpty(message = "Password is empty.")
+    @NotNull(message = "Password is not null.")
     @Size(min = 8, message = "Password should be 8 characters long minimum")
     private String password;
 

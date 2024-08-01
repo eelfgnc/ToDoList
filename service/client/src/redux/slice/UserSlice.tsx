@@ -19,7 +19,6 @@ export const userSlice = createSlice({
     initialState: initialStateUser,
     reducers:{
         setUserWithRole: (state, action) => {
-            console.log("set slice: ", action.payload);
             state.id = action.payload.id;
             state.userName = action.payload.userName;
             state.name = action.payload.name;

@@ -4,7 +4,6 @@ import ForbiddenPage from "../pages/FobiddenPage";
 
 export const ChecckPermission = (pagePermissions?: string[]): boolean => {
 	const userPermissions = useSelector((state: any) => state.user.roles);
-	console.log("user permission: ", userPermissions);
 	if(pagePermissions === undefined || pagePermissions?.length === 0 || userPermissions.includes(RolePageConstant.ADMIN)) {
 		return true;
 	}

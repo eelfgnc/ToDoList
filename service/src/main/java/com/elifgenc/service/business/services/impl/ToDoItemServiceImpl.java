@@ -30,10 +30,12 @@ public class ToDoItemServiceImpl implements ToDoItemService {
     }
 
     @Override
-    public ToDoItemDTO createToDo(CreateToDoItemDTO createToDoItemDTO) {
+    public void createToDo(CreateToDoItemDTO createToDoItemDTO) {
+        System.out.println(createToDoItemDTO.getUserId());
         User user = userRepository.findById(createToDoItemDTO.getUserId()).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
 
         ToDoItem toDoItem = ToDoItem.builder()
+                .user(user)
                 .item(createToDoItemDTO.getItem())
                 .dueDate(createToDoItemDTO.getDueTime())
                 .isDone(false)
@@ -41,17 +43,15 @@ public class ToDoItemServiceImpl implements ToDoItemService {
         ToDoItem createToDoItem = toDoItemRepository.save(toDoItem);
         user.getToDoItems().add(createToDoItem);
         userRepository.save(user);
-        return modelMapperBean.GetModelMapper().map(createToDoItem, ToDoItemDTO.class);
     }
 
     @Override
-    public ToDoItemDTO updateToDo(Long id, CreateToDoItemDTO createToDoItemDTO) {
+    public void updateToDo(Long id, CreateToDoItemDTO createToDoItemDTO) {
         ToDoItem toDoItem = toDoItemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.TODO_NOT_FOUND));
         toDoItem.setItem(createToDoItemDTO.getItem());
         toDoItem.setDueDate(createToDoItemDTO.getDueTime());
         toDoItem.setIsDone(false);
-        ToDoItem updateDoItem = toDoItemRepository.save(toDoItem);
-        return modelMapperBean.GetModelMapper().map(updateDoItem, ToDoItemDTO.class);
+        toDoItemRepository.save(toDoItem);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.elifgenc.service.business.dto.CreateToDoItemDTO;
 import com.elifgenc.service.business.dto.SuccessResponseDTO;
 import com.elifgenc.service.business.dto.ToDoItemDTO;
 import com.elifgenc.service.business.services.ToDoItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,17 +29,22 @@ public class ToDoItemControllerImpl implements ToDoItemController {
     }
 
     @Override
-    public ResponseEntity<ToDoItemDTO> createToDoItem(CreateToDoItemDTO createToDoItemDTO) {
-        return ResponseEntity.ok(toDoItemService.createToDo(createToDoItemDTO));
+    @PostMapping
+    public ResponseEntity<SuccessResponseDTO> createToDoItem(@Valid @RequestBody CreateToDoItemDTO createToDoItemDTO) {
+        toDoItemService.createToDo(createToDoItemDTO);
+        return ResponseEntity.ok(new SuccessResponseDTO(ResponseConstant.SUCCESS_ADD_MESSAGE.getMessage()));
     }
 
     @Override
-    public ResponseEntity<ToDoItemDTO> updateToDoItem(Long id, CreateToDoItemDTO updateToDoItemDTO) {
-        return ResponseEntity.ok(toDoItemService.updateToDo(id, updateToDoItemDTO));
+    @PutMapping("/{id}")
+    public ResponseEntity<SuccessResponseDTO> updateToDoItem(@PathVariable(name = "id")Long id, @Valid @RequestBody CreateToDoItemDTO updateToDoItemDTO) {
+        toDoItemService.updateToDo(id, updateToDoItemDTO);
+        return ResponseEntity.ok(new SuccessResponseDTO(ResponseConstant.SUCCESS_EDIT_MESSAGE.getMessage()));
     }
 
     @Override
-    public ResponseEntity<SuccessResponseDTO> deleteToDoItem(Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<SuccessResponseDTO> deleteToDoItem(@PathVariable(name = "id")Long id) {
         toDoItemService.deleteToDo(id);
         return ResponseEntity.ok(SuccessResponseDTO.builder().message(ResponseConstant.SUCCESS_DELETE_MESSAGE.getMessage()).build());
 

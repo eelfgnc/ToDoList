@@ -7,9 +7,9 @@ import java.util.List;
 public interface ToDoItemService {
     List<ToDoItemDTO> getAllToDo(Long id);
 
-    ToDoItemDTO createToDo(CreateToDoItemDTO createToDoItemDTO);
+    void createToDo(CreateToDoItemDTO createToDoItemDTO);
 
-    ToDoItemDTO updateToDo(Long id, CreateToDoItemDTO createToDoItemDTO);
+    void updateToDo(Long id, CreateToDoItemDTO createToDoItemDTO);
 
     void deleteToDo(Long id);
 }

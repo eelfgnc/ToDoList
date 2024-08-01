@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @Entity
-@Table(name = "todo_items")
+@Table(name = "todos")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ToDoItem extends AuditingAwareBaseEntity implements Serializable {
