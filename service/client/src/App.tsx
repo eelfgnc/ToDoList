@@ -6,7 +6,8 @@ import Layout from './components/Layout';
 import RolePageConstant from './constants/RolePageConstant';
 import LoginPage from './pages/LoginPage';
 import PrivateRoute from './components/PrivateRoute';
-import ToDoListPage from './pages/ToDoListPage';
+import TaskListPage from './pages/TaskListPage';
+import UserRegistePage from './pages/UserRegisterPage';
 
 const App = () => {
 
@@ -35,7 +36,16 @@ const App = () => {
           path="/todo-list"
           element={
             <PrivateRoute  path="/todo-list" scopes={[RolePageConstant.TODO_LIST]}>
-              <ToDoListPage />
+              <TaskListPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/register"
+          element={
+            <PrivateRoute  path="/register" scopes={[]}>
+              <UserRegistePage />
             </PrivateRoute>
           }
         />

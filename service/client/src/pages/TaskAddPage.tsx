@@ -1,60 +1,58 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import api from "../config/AxiosConfig";
 import { store } from "../redux/store";
 import { addNotification } from "../redux/slice/NotificationSlice";
 import { useSelector } from "react-redux";
-import { ToDoItemDTO } from "../dto/ToDoItemDTO";
-import { format } from "date-fns";
+import { Assignment } from "@mui/icons-material";
+import { TaskDTO } from "../dto/TaskDTO";
 
-interface ToDoAddPageProps {
-    initializer: ToDoItemDTO;
+interface TaskAddPageProps {
+    initializer: TaskDTO;
     open: boolean;
     handleClose : (t: boolean) => void;
     setListUpdate: (t: boolean) => void;
 }
-const ToDoAddPage=(props: ToDoAddPageProps)=>{
+const TaskAddPage=(props: TaskAddPageProps)=>{
     const userId = useSelector((state: any) => state.user.id);
     const [item, setItem] = useState<string>(props.initializer.item);
 
     const handleSubmit =  async (event: React.FormEvent) => {
         event.preventDefault();
-        const todoText = item;
+        const taskText = item;
         setItem("");
         if(props.initializer.id === 0){
-            api.post("/todo", {
+            api.post("/task", {
                 userId: userId,
-                item: todoText,
-                dueTime: format(new Date(),'dd-MM-yyyy HH:mm:ss')
+                item: taskText,
+                completed: props.initializer.isDone
             }).then((message: string) => {
                 if(message !== undefined){
-                    store.dispatch(addNotification("Başarılı bir şekilde kaydedildi."));
-                    props.setListUpdate(true);                
+                    store.dispatch(addNotification("The task was successfully added."));
+                    props.setListUpdate(true);
                     props.handleClose(false);
                 }
             }).catch((e: any) => {
-                store.dispatch(addNotification("Kayıt ekleme işlemi başarısız."));
+                store.dispatch(addNotification({message: "The task was not successfully added.", type:"error"}));
             });
         }
         else{
-            api.put("/todo/"+ props.initializer.id, {
+            api.put("/task/"+ props.initializer.id, {
                 userId: userId,
-                item: todoText,
-                dueTime: format(new Date(), 'dd-MM-yyyy HH:mm:ss')
+                item: taskText,
+                completed: props.initializer.isDone
             }).then((message: string) => {
                 if(message !== undefined){
-                    store.dispatch(addNotification("Başarılı bir şekilde güncellendi."));
-                    props.setListUpdate(true);                
+                    store.dispatch(addNotification("The task was successfully edited."));
+                    props.setListUpdate(true);    
                     props.handleClose(false);
                 }
             }).catch((e: any) => {
-                store.dispatch(addNotification("Güncelleme işlemi başarısız."));
+                store.dispatch(addNotification({message: "The task was not successfully edited.", type:"error"}));
             });
         }
+    };
 
-      };
-;
-    
     useEffect(() => {
         setItem(props.initializer.item);
     }, [props.initializer]);
@@ -66,22 +64,32 @@ const ToDoAddPage=(props: ToDoAddPageProps)=>{
             fullWidth={true}
             maxWidth={"sm"}
         >
-            <DialogTitle>{props.initializer.id !== 0 ? "Save Todo":"Update Todo"}</DialogTitle>
+            <DialogTitle>{props.initializer.id !== 0 ? "Save New Task":"Update Task"}</DialogTitle>
             <DialogContent>
             <form onSubmit={handleSubmit}>
                 <TextField
                     autoFocus
                     required
                     margin="dense"
-                    id="todo"
-                    name="todo"
-                    label="Todo"
+                    id="task"
+                    name="task"
+                    label="Task"
                     type="text"
                     fullWidth
                     variant="standard"
                     value={item}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                        setItem(event.target.value);                    
+                        setItem(event.target.value);
+                    }}
+                    InputProps={{
+                        startAdornment:(
+                            <InputAdornment position="start">
+                                <Assignment
+                                    color="primary"
+                                    fontSize="large"
+                                />
+                            </InputAdornment>
+                        )
                     }}
                 />
                 <DialogActions>
@@ -99,4 +107,4 @@ const ToDoAddPage=(props: ToDoAddPageProps)=>{
       </Dialog>
     );
 }
-export default ToDoAddPage;
+export default TaskAddPage;

@@ -37,19 +37,17 @@ export default function MiniDrawer(props: any) {
   
 
 	return (
-    <Box sx={{ display: 'flex' }}>
+    <div style={{ display: 'flex' }}>
 			<CssBaseline />
 			<TopBar onMenuClick={handleMenuClick} isSideBarOpen={isSideBarOpen} />
-            <SideBar open={isSideBarOpen} onClose={handleSideBarClose} />
-            <Main open={isSideBarOpen}>
-                <Toolbar />
-                {props.children}
-            </Main>
-			{/* <Content>
-				<Toolbar/>
-				{props.children}
-			</Content> */}
-		</Box>
+      <SideBar open={isSideBarOpen} onClose={handleSideBarClose} />
+      <Main open={isSideBarOpen} style={{flexGrow:1, padding:1}}>
+        {/* <Toolbar /> */}
+        <div style={{display:"flex", alignItems:"center", justifyContent:"center",  height: "50vh", paddingTop:"100px"}}>
+          {props.children}
+        </div>
+      </Main>
+		</div>
 	);
 }
 

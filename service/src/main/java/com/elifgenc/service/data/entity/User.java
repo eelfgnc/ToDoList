@@ -38,11 +38,6 @@ public class User extends AuditingAwareBaseEntity implements Serializable {
     private String lastName;
 
     @Column(
-            name = "date_of_birth"
-    )
-    private LocalDateTime dateOfBirth;
-
-    @Column(
             name = "phone",
             columnDefinition = "varchar(11)"
     )
@@ -88,7 +83,7 @@ public class User extends AuditingAwareBaseEntity implements Serializable {
     private List<UserRole> userRoles= new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<ToDoItem> toDoItems = new ArrayList<>();
+    private List<Task> toDoItems = new ArrayList<>();
 
     public String getFullName(){
         return getFirstName() + " " + getLastName();

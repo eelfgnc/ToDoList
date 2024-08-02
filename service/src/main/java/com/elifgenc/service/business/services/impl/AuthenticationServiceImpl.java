@@ -40,8 +40,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow(() -> new IllegalStateException("ROLE USER was not initiated"));
 
         var user = User.builder()
-                .firstName(request.getFirstname())
-                .lastName(request.getLastname())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .phone(request.getPhone())
+                .city(request.getCity())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .accountLocked(false)
@@ -63,7 +65,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException(request.getEmail()));
         user.setLastLoaginDate(LocalDateTime.now());
-
         User updateUser = userRepository.save(user);
         RefreshToken  refreshToken = refreshTokenService.generateRefreshTokeByUser(updateUser);
 

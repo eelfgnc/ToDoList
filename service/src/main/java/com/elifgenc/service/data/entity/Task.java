@@ -5,16 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Builder
 @Entity
-@Table(name = "todos")
+@Table(name = "task")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ToDoItem extends AuditingAwareBaseEntity implements Serializable {
+public class Task extends AuditingAwareBaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -35,11 +34,11 @@ public class ToDoItem extends AuditingAwareBaseEntity implements Serializable {
     )
     private Boolean isDone;
 
-
     @Column(
-            name = "due_date"
+            name = "is_deleted",
+            columnDefinition = "boolean default false"
     )
-    private LocalDateTime dueDate;
+    private Boolean isDeleted;
 
     @ManyToOne
     @JoinColumn(name="user_id")

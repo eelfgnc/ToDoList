@@ -1,10 +1,13 @@
-import { Button, Card, CardActions, CardContent, CardHeader, InputAdornment, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, InputAdornment, TextField, Typography } from "@mui/material";
 import { Lock, Person } from "@mui/icons-material";
 import { setTokenOnLocalStorage } from "../utils/Auth";
 import { LoginDTO } from "../dto/LoginDTO";
 import api from "../config/AxiosConfig";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { store } from "../redux/store";
+import { addNotification } from "../redux/slice/NotificationSlice";
+import AppImages from "../assets/images/to-do-list.png";
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -12,7 +15,8 @@ const LoginPage = () => {
 	const [password, setPassword] = useState("");
 
     const handleLogin = () => {
-		api.post("/auth/login", { "email":username, "password":password }).then(
+		api.post("/auth/login", { "email":username, "password":password })
+        .then(
 			(response: LoginDTO) => {
 				setTokenOnLocalStorage(
 					response.accessToken,
@@ -22,7 +26,10 @@ const LoginPage = () => {
 				window.location.reload();
                 //navigate('/todo-list');
 			}
-		);
+		)
+        .catch(()=>{
+            store.dispatch(addNotification({message: "You can't log in. Check your username and password.", type:"error"}));
+        });
 	};
 
     const handleUsernameChange = (e: any) => {
@@ -34,68 +41,82 @@ const LoginPage = () => {
 	};
 
     return (
-        <form autoComplete="off">
-        <Card>
-            <CardHeader
-                title="ToDo App"
-            />
-            <CardContent>
-                <div
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            handleLogin();
-                        }
-                    }}
-                >
-                    <TextField
-                        required
-                        fullWidth
-                        variant="outlined"
-                        id="username"
-                        type="text"
-                        label="Kullanıcı Adı"
-                        margin="normal"
-                        onChange={handleUsernameChange}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Person color="action" />
-                                </InputAdornment>
-                            ),
+            <form autoComplete="off" style={{paddingTop: "100px"}}>
+                <Card sx={{ maxWidth: 600 }} >
+                    <CardMedia
+                        component="img"
+                        sx={{
+                        width: 150,
+                        height: 150,
+                        margin: "20px auto",
+                        borderRadius: "0%",
                         }}
+                        image={AppImages}
+                        alt="App Logo"
                     />
-                    <TextField
-                        required
-                        fullWidth
-                        variant="outlined"
-                        id="password"
-                        type="password"
-                        label="Parola"
-                        margin="normal"
-                        onChange={handlePasswordChange}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Lock color="action" />
-                                </InputAdornment>
-                            ),
-                        }}
+                    <CardHeader
+                        title="Sign in to ToDo App"
                     />
-                </div>
-            </CardContent>
-            <CardActions>
-                <Button
-                    variant="contained"
-                    size="large"
-                    type="button"
-                    onClick={handleLogin}
-                >
-                    GİRİŞ YAP
-                </Button>
-            </CardActions>
-        </Card>
-    </form>
-    )
+                    <CardContent>
+                        <div
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    handleLogin();
+                                }
+                            }}
+                        >
+                            <TextField
+                                required
+                                fullWidth
+                                variant="outlined"
+                                id="username"
+                                type="text"
+                                label="Username"
+                                margin="normal"
+                                onChange={handleUsernameChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Person color="action" />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <TextField
+                                required
+                                fullWidth
+                                variant="outlined"
+                                id="password"
+                                type="password"
+                                label="Password"
+                                margin="normal"
+                                onChange={handlePasswordChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <Lock color="action" />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </div>
+                    </CardContent>
+                    <CardActions style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            type="button"
+                            onClick={handleLogin}
+                        >
+                            SIGN IN
+                        </Button>
+                    </CardActions>
+                    <CardContent>
+                        <Link to={"http://localhost:3000/register"}><b>Create an account!</b></Link>
+                    </CardContent>
+                </Card>
+            </form>
+    );
 }
 
 export default LoginPage;

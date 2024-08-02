@@ -16,11 +16,15 @@ public class RegistrationRequestDTO {
 
     @NotEmpty(message = "Firstname is empty")
     @NotNull(message = "Firstname is null")
-    private String firstname;
+    private String firstName;
 
     @NotEmpty(message = "Lastname is empty")
     @NotNull(message = "Lastname is null")
-    private String lastname;
+    private String lastName;
+
+    private String city;
+
+    private String phone;
 
     @Email(message = "Email is not well formatted")
     @NotEmpty(message = "Email is null")

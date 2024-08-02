@@ -1,9 +1,10 @@
-import { AppBar, Grid, IconButton, styled, Toolbar, Typography } from "@mui/material";
+import { AppBar, Grid, IconButton, ListItemIcon, styled, Toolbar, Typography } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, Logout, PersonAdd } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 interface TopBarProps {
     onMenuClick: () => void;
@@ -32,7 +33,7 @@ const StyledAppBar = styled(AppBar, {
 }));
 
 const TopBar = (props: TopBarProps) =>{
-    const [auth, setAuth] = useState(true);
+    const auth = useSelector((state: any) => state.user.id);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -52,36 +53,52 @@ const TopBar = (props: TopBarProps) =>{
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     ToDo App
                 </Typography>
-                {auth && (
+                {auth > 0 && (
                     <div>
-                    <IconButton
-                        size="large"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleMenu}
-                        color="inherit"
-                    >
-                        <AccountCircle />
-                    </IconButton>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                        }}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                    >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                    </Menu>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+                        >
+                            <AccountCircle fontSize="large"/>
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                            }}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon>
+                                    <PersonAdd
+                                        fontSize="medium"
+                                        color="success"
+                                    />
+                                </ListItemIcon>
+                                Profile
+                            </MenuItem>
+                            <MenuItem onClick={handleClose}>
+                                <ListItemIcon>
+                                    <Logout
+                                        color="error"
+                                        fontSize="medium"
+                                    />
+                                </ListItemIcon>
+                                Sign Out
+                            </MenuItem>
+                        </Menu>
                     </div>
                 )}
             </Toolbar>            

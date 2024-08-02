@@ -13,6 +13,5 @@ import java.time.LocalDateTime;
 public class CreateToDoItemDTO {
     private Long userId;
     private String item;
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime dueTime;
+    private Boolean completed;
 }

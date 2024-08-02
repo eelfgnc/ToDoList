@@ -11,7 +11,9 @@ import { checkTokenOnLocalStorage } from './utils/Auth';
 import api from './config/AxiosConfig';
 import { UserRoleDTO } from './dto/UserRoleDTO';
 import { setUserWithRole } from './redux/slice/UserSlice';
-import { CircularProgress, createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material';
+import Notification from './components/Notification';
+import CircularProgress from './components/CircularProgress';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container!); // React 18 kullanımı
@@ -44,7 +46,7 @@ function render() {
     <Provider store={store}>
       <SnackbarProvider maxSnack={5} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
         <CircularProgress />
-        {/* <Notification /> */}
+        <Notification />
         <BrowserRouter>
           <ThemeProvider theme={theme}>
             <App />

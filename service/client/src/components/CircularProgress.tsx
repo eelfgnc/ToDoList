@@ -20,37 +20,21 @@ export function hideLoading() {
 }
 
 const CircularProgress = () => {
-	const isLoading = useSelector((str: any) => str.load.isLoading || false);
+	const isLoading = useSelector((str: any) => str.loading.isLoading || false);
 
 	return (
 		<>
 			{isLoading && (
 				<div>
-					<div
-						style={{
-							zIndex: 4000,
-							display: "flex",
-							position: "absolute",
-							top: "50%",
-							left: "50%",
-							marginTop: -42,
-							marginLeft: -40,
-							background: "#ff5542",
-							opacity: 0.4,
-							width: "80px",
-							height: "80px",
-							borderRadius: 40,
-						}}
-					></div>
 					<img
 						style={{
 							zIndex: 5000,
-							display: "flex",
-							position: "absolute",
+							position: "fixed",
 							top: "50%",
 							left: "50%",
-							marginTop: -75 / 2,
-							marginLeft: -75 / 2,
+							transform: "translate(-50%, -50%)",
+							width: "250px",
+							textAlign: "center",
 						}}
 						src={loadingGif}
 						alt="loading..."

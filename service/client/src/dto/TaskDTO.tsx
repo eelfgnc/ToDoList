@@ -1,10 +1,10 @@
-export interface ToDoItemDTO {
+export interface TaskDTO {
     id: number;
     item: string;
     isDone: boolean;
 };
 
-export const ToDoItemInitialize: ToDoItemDTO =  {
+export const TaskInitialize: TaskDTO =  {
     id: 0,
     item:"",
     isDone:false
