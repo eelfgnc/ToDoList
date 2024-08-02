@@ -1,15 +1,15 @@
 package com.elifgenc.service.business.services;
 
-import com.elifgenc.service.business.dto.CreateToDoItemDTO;
-import com.elifgenc.service.business.dto.ToDoItemDTO;
+import com.elifgenc.service.business.dto.request.TaskRequestDTO;
+import com.elifgenc.service.business.dto.response.TaskDTO;
 import java.util.List;
 
 public interface TaskService {
-    List<ToDoItemDTO> getAllToDo(Long id, String type);
+    List<TaskDTO> getAllToDo(Long id, String type);
 
-    void createToDo(CreateToDoItemDTO createToDoItemDTO);
+    void createToDo(TaskRequestDTO taskRequestDTO);
 
-    void updateToDo(Long id, CreateToDoItemDTO createToDoItemDTO);
+    void updateToDo(Long id, TaskRequestDTO taskRequestDTO);
 
     void deleteToDo(Long id);
 

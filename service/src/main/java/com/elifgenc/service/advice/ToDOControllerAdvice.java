@@ -1,6 +1,6 @@
 package com.elifgenc.service.advice;
 
-import com.elifgenc.service.business.dto.ErrorResponseDTO;
+import com.elifgenc.service.business.dto.response.ErrorResponseDTO;
 import com.elifgenc.service.exception.ObjectNotFoundException;
 import com.elifgenc.service.exception.RefreshTokenException;
 import com.elifgenc.service.exception.ToDoServiceException;

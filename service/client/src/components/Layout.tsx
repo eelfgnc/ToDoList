@@ -42,8 +42,8 @@ export default function MiniDrawer(props: any) {
 			<TopBar onMenuClick={handleMenuClick} isSideBarOpen={isSideBarOpen} />
       <SideBar open={isSideBarOpen} onClose={handleSideBarClose} />
       <Main open={isSideBarOpen} style={{flexGrow:1, padding:1}}>
-        {/* <Toolbar /> */}
-        <div style={{display:"flex", alignItems:"center", justifyContent:"center",  height: "50vh", paddingTop:"100px"}}>
+        <Toolbar style={{height: "100px"}}/>
+        <div style={{display:"flex", justifyContent:"center"}}>
           {props.children}
         </div>
       </Main>

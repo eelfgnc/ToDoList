@@ -14,6 +14,7 @@ import { setUserWithRole } from './redux/slice/UserSlice';
 import { createTheme, ThemeProvider } from '@mui/material';
 import Notification from './components/Notification';
 import CircularProgress from './components/CircularProgress';
+import { accessToken } from './constants/AppConstant';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container!); // React 18 kullanımı
@@ -27,7 +28,7 @@ const theme = createTheme({
 
 function render() {
   if (checkTokenOnLocalStorage()) {
-		const tokenString = localStorage.getItem("accessToken");
+		const tokenString = localStorage.getItem(accessToken);
 		api.setAuthHeader(tokenString);
 		if (
 			tokenString !== undefined &&

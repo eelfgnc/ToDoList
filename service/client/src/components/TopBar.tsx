@@ -5,6 +5,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react";
 import { AccountCircle, Logout, PersonAdd } from "@mui/icons-material";
 import { useSelector } from "react-redux";
+import { store } from "../redux/store";
+import { removeUserWithRole } from "../redux/slice/UserSlice";
+import { useNavigate } from "react-router-dom";
+import { checkTokenOnLocalStorage } from "../utils/Auth";
 
 interface TopBarProps {
     onMenuClick: () => void;
@@ -32,8 +36,8 @@ const StyledAppBar = styled(AppBar, {
     }),
 }));
 
-const TopBar = (props: TopBarProps) =>{
-    const auth = useSelector((state: any) => state.user.id);
+const TopBar = (props: TopBarProps) =>{    
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -44,6 +48,13 @@ const TopBar = (props: TopBarProps) =>{
         setAnchorEl(null);
     };
 
+    const signOut = () => {
+        localStorage.clear();
+        store.dispatch(removeUserWithRole());
+        navigate("login");
+        handleClose();
+    }
+
     return (		
         <StyledAppBar  position="fixed" open={props.isSideBarOpen}>
             <Toolbar>
@@ -53,7 +64,7 @@ const TopBar = (props: TopBarProps) =>{
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     ToDo App
                 </Typography>
-                {auth > 0 && (
+                {checkTokenOnLocalStorage() && (
                     <div>
                         <IconButton
                             size="large"
@@ -89,7 +100,7 @@ const TopBar = (props: TopBarProps) =>{
                                 </ListItemIcon>
                                 Profile
                             </MenuItem>
-                            <MenuItem onClick={handleClose}>
+                            <MenuItem onClick={signOut}>
                                 <ListItemIcon>
                                     <Logout
                                         color="error"

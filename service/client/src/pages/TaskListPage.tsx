@@ -67,7 +67,7 @@ const TaskListPage = () => {
                 accessorKey: 'item',
                 header: 'Item',
                 Cell: ({ row }: any) => (
-                    <span style={{ textDecoration: row.original.isDone ? 'line-through' : 'none' }}>
+                    <span style={{ textDecoration: row.original.isDone ? 'line-through' : 'none', color: row.original.isDone ? 'red' : 'black'}}>
                     {row.original.item}
                     </span>
                 ),

@@ -8,6 +8,6 @@ import org.springframework.data.domain.AuditorAware;
 public class AuditingAwareBean {
     @Bean
     public AuditorAware<String> auditorAware() {
-        return new AuditorAwareImlp();
+        return new AuditorAwareImpl();
     }
 }

@@ -27,7 +27,7 @@ instance.interceptors.response.use(
 			checkTokenOnLocalStorage()
 		) {
 			api.removeAuthHeader();
-			api.post("/api/refreshToken", {
+			api.post("/auth/refresh-token", {
 				refreshToken: localStorage.getItem("refreshToken"),
 			})
 				.then((response: RefreshTokenDTO) => {

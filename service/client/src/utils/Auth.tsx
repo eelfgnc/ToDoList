@@ -1,10 +1,12 @@
-export const setTokenOnLocalStorage = ( accessToken: string, refreshToken : string) => {
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
+import { accessToken, refreshToken } from "../constants/AppConstant";
+
+export const setTokenOnLocalStorage = ( accessTokenValue: string, refreshTokenValue : string) => {
+    localStorage.setItem(accessToken, accessTokenValue);
+    localStorage.setItem(refreshToken, refreshTokenValue);
 }
 
 export const checkTokenOnLocalStorage = (): boolean => {
-    if(localStorage.getItem("accessToken") != null && localStorage.getItem("refreshToken") != null)
+    if(localStorage.getItem(accessToken) != null && localStorage.getItem(refreshToken) != null)
         return true;
     else
         return false;
