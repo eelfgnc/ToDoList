@@ -1,6 +1,8 @@
 package com.elifgenc.service.business.services.impl;
 
 import com.elifgenc.service.bean.ModelMapperBean;
+import com.elifgenc.service.business.dto.response.TaskAnalysisDTO;
+import com.elifgenc.service.business.dto.response.TaskInformationDTO;
 import com.elifgenc.service.business.services.TaskService;
 import com.elifgenc.service.constant.ErrorMessage;
 import com.elifgenc.service.business.dto.request.TaskRequestDTO;
@@ -13,6 +15,8 @@ import com.elifgenc.service.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,12 +25,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
     private final UserRepository userRepository;
-    private final TaskRepository toDoItemRepository;
+    private final TaskRepository taskRepository;
     private final ModelMapperBean modelMapperBean;
 
     @Override
-    public List<TaskDTO> getAllToDo(Long id, String type) {
-        List<Task> toDoItems = toDoItemRepository.findByUserIdAndIsDeletedFalse(id);
+    public List<TaskDTO> getAllTask(Long id, String type) {
+        List<Task> toDoItems = taskRepository.findByUserIdAndIsDeletedFalse(id);
         List<Task> resultToDoItems = new ArrayList<>();
         if("All".equals(type)){
             return toDoItems.stream().map(t -> modelMapperBean.GetModelMapper().map(t, TaskDTO.class)).collect(Collectors.toList());
@@ -41,7 +45,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void createToDo(TaskRequestDTO taskRequestDTO) {
+    public List<TaskInformationDTO> getHistoryTasks(Long userId){
+        List<Task> tasks = taskRepository.findByUserId(userId);
+        return tasks.stream().map(TaskInformationDTO::fromTask).collect(Collectors.toList());
+    }
+
+    @Override
+    public void createTask(TaskRequestDTO taskRequestDTO) {
         System.out.println(taskRequestDTO.getUserId());
         User user = userRepository.findById(taskRequestDTO.getUserId()).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
 
@@ -51,38 +61,40 @@ public class TaskServiceImpl implements TaskService {
                 .isDone(taskRequestDTO.getCompleted())
                 .isDeleted(false)
                 .build();
-        Task createToDoItem = toDoItemRepository.save(toDoItem);
+        Task createToDoItem = taskRepository.save(toDoItem);
         user.getToDoItems().add(createToDoItem);
         userRepository.save(user);
     }
 
     @Override
-    public void updateToDo(Long id, TaskRequestDTO taskRequestDTO) {
-        Task toDoItem = toDoItemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.TODO_NOT_FOUND));
+    public void updateTask(Long id, TaskRequestDTO taskRequestDTO) {
+        Task toDoItem = taskRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.TODO_NOT_FOUND));
         toDoItem.setItem(taskRequestDTO.getItem());
         toDoItem.setIsDone(taskRequestDTO.getCompleted());
         toDoItem.setIsDeleted(false);
-        toDoItemRepository.save(toDoItem);
+        taskRepository.save(toDoItem);
     }
 
     @Override
-    public void deleteToDo(Long id) {
-        Task toDoItem = toDoItemRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.TODO_NOT_FOUND));
+    public void deleteTask(Long id) {
+        Task toDoItem = taskRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.TODO_NOT_FOUND));
         toDoItem.setIsDeleted(true);
-        toDoItemRepository.save(toDoItem);
+        taskRepository.save(toDoItem);
     }
 
     @Override
-    public void deleteToDosByType( Long userId, String type) {
+    public void deleteTaskByUserIdAndType( Long userId, String type) {
         List<Task> toDoItems = new ArrayList<>();
         if("All".equals(type)){
-            toDoItems.addAll(toDoItemRepository.findByUserIdAndIsDeletedFalse(userId));
+            toDoItems.addAll(taskRepository.findByUserIdAndIsDeletedFalse(userId));
         }else if ("Done".equals(type)){
-            toDoItems.addAll(toDoItemRepository.findByUserIdAndIsDoneTrueAndIsDeletedFalse(userId));
+            toDoItems.addAll(taskRepository.findByUserIdAndIsDoneTrueAndIsDeletedFalse(userId));
         }
         for (Task toDoItem : toDoItems) {
             toDoItem.setIsDeleted(true);
-            toDoItemRepository.save(toDoItem);
+            taskRepository.save(toDoItem);
         }
     }
+
+
 }

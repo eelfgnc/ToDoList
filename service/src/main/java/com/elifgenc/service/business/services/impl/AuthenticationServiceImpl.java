@@ -46,8 +46,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .city(request.getCity())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .accountLocked(false)
-                .enabled(false)
+                .isLocked(false)
+                .isDeleted(false)
                 .build();
 
         List<UserRole> userRoleList = new ArrayList<>();

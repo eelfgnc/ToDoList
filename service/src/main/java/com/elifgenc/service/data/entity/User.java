@@ -65,14 +65,14 @@ public class User extends AuditingAwareBaseEntity implements Serializable {
     private String password;
 
     @Column(
-            name = "account_locked"
+            name = "is_locked"
     )
-    private boolean accountLocked;
+    private boolean isLocked;
 
     @Column(
-            name = "enabled"
+            name = "is_deleted"
     )
-    private boolean enabled;
+    private boolean isDeleted;
 
     @Column(
             name = "last_login_date"

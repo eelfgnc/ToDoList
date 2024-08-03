@@ -91,15 +91,6 @@ const TopBar = (props: TopBarProps) =>{
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleClose}>
-                                <ListItemIcon>
-                                    <PersonAdd
-                                        fontSize="medium"
-                                        color="success"
-                                    />
-                                </ListItemIcon>
-                                Profile
-                            </MenuItem>
                             <MenuItem onClick={signOut}>
                                 <ListItemIcon>
                                     <Logout

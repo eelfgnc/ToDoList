@@ -1,5 +1,8 @@
 package com.elifgenc.service.controller.impl;
 
+import com.elifgenc.service.business.dto.response.TaskAnalysisDTO;
+import com.elifgenc.service.business.dto.response.TaskInformationDTO;
+import com.elifgenc.service.business.services.impl.TaskServiceImpl;
 import com.elifgenc.service.constant.ResponseConstant;
 import com.elifgenc.service.controller.TaskController;
 import com.elifgenc.service.business.dto.request.TaskRequestDTO;
@@ -16,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -25,71 +30,46 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Task", description = "This tag includes task adding, updating, deleting and task completion services.")
 public class TaskControllerImpl implements TaskController {
-    private final TaskService toDoItemService;
-
+    private final TaskService taskService;
+    private final TaskServiceImpl taskServiceImpl;
 
     @Override
     @GetMapping("/user/{id}")
-    @Operation(summary = "Lists tasks",
-            description = "Lists the tasks belonging to the user according to the task type."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully lists the user's tasks according to task type.")
-    })
-    public ResponseEntity<List<TaskDTO>> getToDoItems(@PathVariable(name = "id") Long id, @RequestParam(name = "type", required = true, defaultValue = "All") String type) {
-        return ResponseEntity.ok(toDoItemService.getAllToDo(id, type));
+    public ResponseEntity<List<TaskDTO>> getTasksByUserIdAndType(@PathVariable(name = "id") Long id, @RequestParam(name = "type", required = true, defaultValue = "All") String type) {
+        return ResponseEntity.ok(taskService.getAllTask(id, type));
+    }
+
+    @Override
+    @GetMapping("/user/{userId}/history")
+    public ResponseEntity<List<TaskInformationDTO>> getHistoryTasks(@PathVariable(name = "userId") Long userId) {
+        return ResponseEntity.ok(taskService.getHistoryTasks(userId));
     }
 
     @Override
     @PostMapping
-    @Operation(summary = "Creates a task",
-            description = "Creates a task with the desired properties."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully creates a task.")
-    })
-    public ResponseEntity<SuccessResponseDTO> createToDoItem(@Valid @RequestBody TaskRequestDTO taskRequestDTO) {
-        toDoItemService.createToDo(taskRequestDTO);
+    public ResponseEntity<SuccessResponseDTO> createTask(@Valid @RequestBody TaskRequestDTO taskRequestDTO) {
+        taskService.createTask(taskRequestDTO);
         return ResponseEntity.ok(new SuccessResponseDTO(ResponseConstant.SUCCESS_ADD_MESSAGE.getMessage()));
     }
 
     @Override
     @PutMapping("/{id}")
-    @Operation(summary = "Updated a task",
-            description = "Updates a task with the desired properties."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully updated a task.")
-    })
-    public ResponseEntity<SuccessResponseDTO> updateToDoItem(@PathVariable(name = "id")Long id, @Valid @RequestBody TaskRequestDTO taskRequestDTO) {
-        toDoItemService.updateToDo(id, taskRequestDTO);
+    public ResponseEntity<SuccessResponseDTO> updateTask(@PathVariable(name = "id")Long id, @Valid @RequestBody TaskRequestDTO taskRequestDTO) {
+        taskService.updateTask(id, taskRequestDTO);
         return ResponseEntity.ok(new SuccessResponseDTO(ResponseConstant.SUCCESS_EDIT_MESSAGE.getMessage()));
     }
 
     @Override
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletes a task",
-            description = "Deletes a task by id"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully mark a task as deleted.")
-    })
-    public ResponseEntity<SuccessResponseDTO> deleteToDoItem(@PathVariable(name = "id")Long id) {
-        toDoItemService.deleteToDo(id);
+    public ResponseEntity<SuccessResponseDTO> deleteTask(@PathVariable(name = "id")Long id) {
+        taskService.deleteTask(id);
         return ResponseEntity.ok(SuccessResponseDTO.builder().message(ResponseConstant.SUCCESS_DELETE_MESSAGE.getMessage()).build());
-
     }
 
     @Override
     @DeleteMapping("/all/{id}")
-    @Operation(summary = "Deletes specific tasks",
-            description = "Deletes specific tasks belonging to the user"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully marks tasks as deleted.")
-    })
-    public ResponseEntity<SuccessResponseDTO> deleteAllToDoItem(@PathVariable(name = "id") Long userId, @RequestParam(name = "type", required = true, defaultValue = "All") String type) {
-        toDoItemService.deleteToDosByType(userId, type);
+    public ResponseEntity<SuccessResponseDTO> deleteAllTask(@PathVariable(name = "id") Long userId, @RequestParam(name = "type", required = true, defaultValue = "All") String type) {
+        taskService.deleteTaskByUserIdAndType(userId, type);
         return ResponseEntity.ok(SuccessResponseDTO.builder().message(ResponseConstant.SUCCESS_ALL_DELETE_MESSAGE.getMessage()).build());
     }
 }

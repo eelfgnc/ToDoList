@@ -35,8 +35,8 @@ const sideBarItemList = [
     permission:[RolePageConstant.TODO_LIST]
   },
   {
-    link:"/history-todo-list",
-    label:"History ToDo List",
+    link:"/history-of-task",
+    label:"History Of Task",
     icon: <History />,
     permission:[RolePageConstant.TODO_LIST]
   },
@@ -47,8 +47,8 @@ const sideBarItemList = [
     permission:[RolePageConstant.TODO_LIST]
   },
   {
-    link:"/users",
-    label:"UserInfo",
+    link:"/user-list",
+    label:"User List",
     icon: <People />,
     permission:[RolePageConstant.TODO_LIST]
   }

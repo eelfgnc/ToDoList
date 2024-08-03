@@ -2,7 +2,7 @@ import { MaterialReactTable } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
 import api from "../config/AxiosConfig";
 import { useSelector } from "react-redux";
-import { Box, Button, Checkbox, IconButton, Menu, MenuItem } from "@mui/material";
+import { Box, Button, Checkbox, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { store } from "../redux/store";
 import { addNotification } from "../redux/slice/NotificationSlice";
 import { Add, DeleteForever, DeleteOutline, Edit, Delete, MoreVert } from "@mui/icons-material";
@@ -126,7 +126,10 @@ const TaskListPage = () => {
 
 
     return (
-        <div style={{width: "95%"}}>
+        <Box sx={{ width: "94%", margin: "0 auto", mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                Task List
+            </Typography>
             <MaterialReactTable
                 columns={columns}
                 data={dataList}
@@ -205,7 +208,7 @@ const TaskListPage = () => {
                 setListUpdate={setListUpdate}
                 type={deleteType}
             />
-        </div>
+      </Box>
     );
 };
 

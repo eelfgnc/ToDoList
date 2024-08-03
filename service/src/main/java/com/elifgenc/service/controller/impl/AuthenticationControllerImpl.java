@@ -29,12 +29,6 @@ public class AuthenticationControllerImpl implements AuthenticationController {
     @Override
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @Operation(summary = "User register service",
-            description = "It is used to create a user registration to use the application."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User registration created successfully.")
-    })
     public ResponseEntity<?> register(
             @RequestBody @Valid RegistrationRequestDTO registrationRequest
     ) {
@@ -44,12 +38,6 @@ public class AuthenticationControllerImpl implements AuthenticationController {
 
     @Override
     @PostMapping("/login")
-    @Operation(summary = "User login service",
-            description = "Used to log in to use the app"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User login completed successfully.")
-    })
     public ResponseEntity<AuthenticationResponseDTO> authenticate(
             @RequestBody @Valid AuthenticationRequestDTO authenticationRequest
     ) {
@@ -58,12 +46,6 @@ public class AuthenticationControllerImpl implements AuthenticationController {
 
     @Override
     @PostMapping("/refresh-token")
-    @Operation(summary = "Refresh token service",
-            description = "Used to renew the renewal key."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Renew key successfully renewed")
-    })
     public ResponseEntity<AuthenticationResponseDTO> refreshToken(@RequestBody @Valid RefreshTokenRequestDTO refreshTokenRequestDTO) {
         return ResponseEntity.ok(authenticationService.generateToken(refreshTokenRequestDTO));
     }

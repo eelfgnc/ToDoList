@@ -8,6 +8,9 @@ import LoginPage from './pages/LoginPage';
 import PrivateRoute from './components/PrivateRoute';
 import TaskListPage from './pages/TaskListPage';
 import UserRegistePage from './pages/UserRegisterPage';
+import UserListPage from './pages/UserListPage';
+import HistoryTaskListPage from './pages/HistoryTaskListPage';
+import TaskAnalysisPage from './pages/TaskAnalysisPage';
 
 const App = () => {
 
@@ -46,6 +49,33 @@ const App = () => {
           element={
             <PrivateRoute  path="/register" scopes={[]}>
               <UserRegistePage />
+            </PrivateRoute>
+          }
+        />
+
+      <Route
+          path="/user-list"
+          element={
+            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.TODO_LIST]}>
+              <UserListPage />
+            </PrivateRoute>
+          }
+        />
+
+      <Route
+          path="/history-of-task"
+          element={
+            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.TODO_LIST]}>
+              <HistoryTaskListPage />
+            </PrivateRoute>
+          }
+        />
+
+      <Route
+          path="/analyze"
+          element={
+            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.TODO_LIST]}>
+              <TaskAnalysisPage />
             </PrivateRoute>
           }
         />

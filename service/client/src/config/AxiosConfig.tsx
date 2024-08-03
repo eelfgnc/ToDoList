@@ -23,7 +23,7 @@ instance.interceptors.response.use(
 	},
 	(error) => {
 		if (
-			error.response?.data?.errorCode === "TODO-005" &&
+			error.response?.data?.errorCode === "TODO-100" &&
 			checkTokenOnLocalStorage()
 		) {
 			api.removeAuthHeader();

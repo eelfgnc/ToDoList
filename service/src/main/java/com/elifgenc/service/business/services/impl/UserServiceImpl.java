@@ -1,6 +1,9 @@
 package com.elifgenc.service.business.services.impl;
 
+import com.elifgenc.service.business.dto.request.DeleteAccountDTO;
+import com.elifgenc.service.business.dto.request.LockAccountDTO;
 import com.elifgenc.service.business.dto.response.UserDTO;
+import com.elifgenc.service.business.dto.response.UserInformationDTO;
 import com.elifgenc.service.constant.ErrorMessage;
 import com.elifgenc.service.data.entity.User;
 import com.elifgenc.service.exception.ObjectNotFoundException;
@@ -32,5 +35,27 @@ public class UserServiceImpl implements UserService {
                 .name(user.getFullName())
                 .roles(roleNames)
                 .build();
+    }
+
+    @Override
+    public List<UserInformationDTO> listOfAllUser(){
+        List<User> users = userRepository.findAll();
+        return users.stream().map(UserInformationDTO::fromUser).collect(Collectors.toList());
+    }
+
+    @Override
+    public void lockedUserAccount(Long userId, LockAccountDTO lockAccountDTO){
+        System.out.println("isLocked: "+lockAccountDTO.getIsLocked());
+        User user = userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
+        user.setLocked(lockAccountDTO.getIsLocked());
+        userRepository.save(user);
+    }
+
+    @Override
+    public  void deleteUserById(Long userId, DeleteAccountDTO deleteAccountDTO){
+        User user = userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
+        System.out.println("isDeleted: "+true);
+        user.setDeleted(deleteAccountDTO.getIsDeleted());
+        userRepository.save(user);
     }
 }
