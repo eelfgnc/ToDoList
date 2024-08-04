@@ -64,7 +64,7 @@ const TaskAddPage=(props: TaskAddPageProps)=>{
             fullWidth={true}
             maxWidth={"sm"}
         >
-            <DialogTitle>{props.initializer.id !== 0 ? "Save New Task":"Update Task"}</DialogTitle>
+            <DialogTitle>{props.initializer.id === 0 ? "Save New Task":"Update Task"}</DialogTitle>
             <DialogContent>
             <form onSubmit={handleSubmit}>
                 <TextField
