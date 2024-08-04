@@ -2,6 +2,7 @@ package com.elifgenc.service.advice;
 
 import com.elifgenc.service.business.dto.response.ErrorResponseDTO;
 import com.elifgenc.service.constant.ErrorMessage;
+import com.elifgenc.service.exception.ConstraintViolationException;
 import com.elifgenc.service.exception.ObjectNotFoundException;
 import com.elifgenc.service.exception.RefreshTokenException;
 import com.elifgenc.service.exception.ToDoServiceException;
@@ -48,6 +49,13 @@ public class ToDoControllerAdvice {
         log.error(e.getInternalMessage());
         ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.createErrorResponse(e.getMessage(),e.getInternalMessage(),e.getCode());
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponseDTO> constraintViolationException(ConstraintViolationException e) {
+        log.error(e.getInternalMessage());
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.createErrorResponse(e.getMessage(),e.getInternalMessage(),e.getCode());
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
 
 }

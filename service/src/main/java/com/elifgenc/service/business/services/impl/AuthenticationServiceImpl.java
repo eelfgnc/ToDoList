@@ -15,8 +15,10 @@ import com.elifgenc.service.data.entity.User;
 import com.elifgenc.service.data.entity.UserRole;
 import com.elifgenc.service.data.repository.RoleRepository;
 import com.elifgenc.service.data.repository.UserRepository;
+import com.elifgenc.service.exception.ConstraintViolationException;
 import com.elifgenc.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -60,8 +62,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userRoleList.add(userRole);
 
         user.setUserRoles(userRoleList);
-
-        userRepository.save(user);
+        try{
+            userRepository.save(user);
+        }catch (DataIntegrityViolationException e){
+            throw new ConstraintViolationException(ErrorMessage.EXIST_VALUE_FOUND);
+        }
     }
 
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {

@@ -45,10 +45,10 @@ const UserRegistePage = () => {
             email:userInfo.email,
             password:userInfo.password
         }).then(() =>{
-            store.dispatch(addNotification(""));
+            store.dispatch(addNotification("Registration is successful."));
             navigation("/login");
         }).catch(() => {
-            store.dispatch(addNotification({message:"", type:"error"}));
+            store.dispatch(addNotification({message:"Registration can't be made with this e-mail address.", type:"error"}));
         })
     }
    

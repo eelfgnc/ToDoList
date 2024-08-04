@@ -6,11 +6,13 @@ import com.elifgenc.service.business.dto.response.UserDTO;
 import com.elifgenc.service.business.dto.response.UserInformationDTO;
 import com.elifgenc.service.constant.ErrorMessage;
 import com.elifgenc.service.data.entity.User;
+import com.elifgenc.service.exception.ConstraintViolationException;
 import com.elifgenc.service.exception.ObjectNotFoundException;
 import com.elifgenc.service.data.repository.UserRepository;
 import com.elifgenc.service.business.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +50,11 @@ public class UserServiceImpl implements UserService {
         System.out.println("isLocked: "+lockAccountDTO.getIsLocked());
         User user = userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
         user.setLocked(lockAccountDTO.getIsLocked());
-        userRepository.save(user);
+        try{
+            userRepository.save(user);
+        }catch (DataIntegrityViolationException e){
+            throw new ConstraintViolationException(ErrorMessage.EXIST_VALUE_FOUND);
+        }
     }
 
     @Override
@@ -56,6 +62,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
         System.out.println("isDeleted: "+true);
         user.setDeleted(deleteAccountDTO.getIsDeleted());
+        try{
+            userRepository.save(user);
+        }catch (DataIntegrityViolationException e){
+            throw new ConstraintViolationException(ErrorMessage.EXIST_VALUE_FOUND);
+        }
         userRepository.save(user);
     }
 }
