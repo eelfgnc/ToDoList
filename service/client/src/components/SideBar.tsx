@@ -32,25 +32,25 @@ const sideBarItemList = [
     link:"/todo-list",
     label:"ToDo List",
     icon: <Checklist />,
-    permission:[RolePageConstant.TODO_LIST]
+    permission:[RolePageConstant.ADMIN, RolePageConstant.USER]
   },
   {
     link:"/history-of-task",
     label:"History Of Task",
     icon: <History />,
-    permission:[RolePageConstant.TODO_LIST]
+    permission:[RolePageConstant.ADMIN, RolePageConstant.USER]
   },
   {
     link:"/analyze",
     label:"Analyze",
     icon: <Calculate />,
-    permission:[RolePageConstant.TODO_LIST]
+    permission:[RolePageConstant.ADMIN]
   },
   {
     link:"/user-list",
     label:"User List",
     icon: <People />,
-    permission:[RolePageConstant.TODO_LIST]
+    permission:[RolePageConstant.ADMIN]
   }
 ];
 

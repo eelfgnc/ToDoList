@@ -1,7 +1,6 @@
 enum RolePageConstant {
     ADMIN = "Admin",
-    TODO_LIST = "ToDo List View",
-    ANALYZE = "Analyze"
+    USER = "User",
 }
 
 export default RolePageConstant;

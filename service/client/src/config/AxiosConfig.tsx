@@ -44,12 +44,12 @@ instance.interceptors.response.use(
 					window.location.reload();
 				});
 		} else if (!axios.isCancel(error)) {
-			store.dispatch(
-				addNotification({
-					message: error?.response?.data?.message,
-					type: "error",
-				})
-			);
+			// store.dispatch(
+			// 	addNotification({
+			// 		message: error?.response?.data?.message,
+			// 		type: "error",
+			// 	})
+			// );
 		}
 
 		if (--loadingProcessNumber <= 0) {

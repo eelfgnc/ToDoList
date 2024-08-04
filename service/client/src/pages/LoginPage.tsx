@@ -1,16 +1,15 @@
-import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, InputAdornment, TextField, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, InputAdornment, TextField, Typography } from "@mui/material";
 import { Lock, Person } from "@mui/icons-material";
 import { setTokenOnLocalStorage } from "../utils/Auth";
 import { LoginDTO } from "../dto/LoginDTO";
 import api from "../config/AxiosConfig";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { store } from "../redux/store";
 import { addNotification } from "../redux/slice/NotificationSlice";
 import AppImages from "../assets/images/to-do-list.png";
 
 const LoginPage = () => {
-    const navigate = useNavigate();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 

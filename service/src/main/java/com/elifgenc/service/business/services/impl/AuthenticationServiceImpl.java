@@ -7,12 +7,15 @@ import com.elifgenc.service.business.dto.request.AuthenticationRequestDTO;
 import com.elifgenc.service.business.dto.request.RefreshTokenRequestDTO;
 import com.elifgenc.service.business.dto.request.RegistrationRequestDTO;
 import com.elifgenc.service.business.dto.response.AuthenticationResponseDTO;
+import com.elifgenc.service.constant.ErrorMessage;
+import com.elifgenc.service.constant.RoleConstant;
 import com.elifgenc.service.data.entity.Role;
 import com.elifgenc.service.data.entity.RefreshToken;
 import com.elifgenc.service.data.entity.User;
 import com.elifgenc.service.data.entity.UserRole;
 import com.elifgenc.service.data.repository.RoleRepository;
 import com.elifgenc.service.data.repository.UserRepository;
+import com.elifgenc.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,8 +39,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     public void register(RegistrationRequestDTO request) {
-        Role role = roleRepository.findByName("USER")
-                .orElseThrow(() -> new IllegalStateException("ROLE USER was not initiated"));
+        Role role = roleRepository.findByName(RoleConstant.USER.getRole())
+                .orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.ROLE_NOT_FOUND));
 
         var user = User.builder()
                 .firstName(request.getFirstName())
@@ -63,7 +66,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationResponseDTO authenticate(AuthenticationRequestDTO request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException(request.getEmail()));
+                .orElseThrow(() -> new ObjectNotFoundException(ErrorMessage.USER_NOT_FOUND));
         user.setLastLoaginDate(LocalDateTime.now());
         User updateUser = userRepository.save(user);
         RefreshToken  refreshToken = refreshTokenService.generateRefreshTokeByUser(updateUser);

@@ -38,7 +38,7 @@ const App = () => {
         <Route
           path="/todo-list"
           element={
-            <PrivateRoute  path="/todo-list" scopes={[RolePageConstant.TODO_LIST]}>
+            <PrivateRoute  path="/todo-list" scopes={[RolePageConstant.USER, RolePageConstant.ADMIN]}>
               <TaskListPage />
             </PrivateRoute>
           }
@@ -56,7 +56,7 @@ const App = () => {
       <Route
           path="/user-list"
           element={
-            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.TODO_LIST]}>
+            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.ADMIN]}>
               <UserListPage />
             </PrivateRoute>
           }
@@ -65,7 +65,7 @@ const App = () => {
       <Route
           path="/history-of-task"
           element={
-            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.TODO_LIST]}>
+            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.USER, RolePageConstant.ADMIN]}>
               <HistoryTaskListPage />
             </PrivateRoute>
           }
@@ -74,7 +74,7 @@ const App = () => {
       <Route
           path="/analyze"
           element={
-            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.TODO_LIST]}>
+            <PrivateRoute  path="/user-list" scopes={[RolePageConstant.ADMIN]}>
               <TaskAnalysisPage />
             </PrivateRoute>
           }
