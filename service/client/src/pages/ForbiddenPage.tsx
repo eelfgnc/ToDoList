@@ -2,7 +2,7 @@ import {CardMedia, Grid, Paper, Typography } from "@mui/material";
 import AlertImages from "../assets/images/alert.png";
 import { Link } from "react-router-dom";
 
-const FobiddenPage = () => {
+const ForbiddenPage = () => {
     return (
         <Paper style={{	width: "50%",
             minWidth: "500px",
@@ -60,4 +60,4 @@ const FobiddenPage = () => {
     )
 };
 
-export default FobiddenPage;
+export default ForbiddenPage;

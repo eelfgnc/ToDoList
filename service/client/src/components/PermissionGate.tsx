@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import RolePageConstant from "../constants/RolePageConstant";
-import ForbiddenPage from "../pages/FobiddenPage";
+import ForbiddenPage from "../pages/ForbiddenPage";
 
 export const ChecckPermission = (pagePermissions?: string[]): boolean => {
 	const userPermissions = useSelector((state: any) => state.user.roles);

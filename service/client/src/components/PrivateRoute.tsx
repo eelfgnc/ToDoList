@@ -2,8 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { checkTokenOnLocalStorage } from "../utils/Auth";
 import PermissionsGate from "./PermissionGate";
-import WelcomePage from "../pages/WelcomePage";
-import FobiddenPage from "../pages/FobiddenPage";
+import ForbiddenPage from "../pages/ForbiddenPage";
 
 interface PrivateRouteProps {
   path: string;
@@ -20,7 +19,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = (props: PrivateRouteProps) => 
   }
 
   return (
-    <PermissionsGate pagePermissions={props.scopes} error={props.path === "/todo-list"? <FobiddenPage/> : undefined}>
+    <PermissionsGate pagePermissions={props.scopes} error={props.path === "/todo-list"? <ForbiddenPage/> : undefined}>
       {props.children}
     </PermissionsGate>
   );
